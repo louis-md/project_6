@@ -27,13 +27,11 @@ kmeans = load("kmeans4000.pickle")
 scaler = load("scaler.pickle")
 
 def getClusterIds(_df):
-    # Predict clusters using KMeans
     cluster_ids = kmeans.predict(_df)
     return cluster_ids
 
 # Final UI:
 # - Input: song name
-# inpt = input("Enter song name: ")
 inpt = st.text_input("Enter song name: ")
 
 if len(inpt) > 0:
@@ -57,16 +55,11 @@ if len(inpt) > 0:
     component.iframe('https://open.spotify.com/embed/track/' + song_id)
     st.write("Recommended song:")
     component.iframe('https://open.spotify.com/embed/track/' + songs_in_cluster[0])
-    stop = False
-    i = 0
     isOk = st.text_input("Do you like it? (y/n) ")
-    while stop == False and i < 9:
-        if isOk.lower() == "y": 
-            st.write("Great!")
-            stop = True
-        elif isOk.lower() == "n": 
-            st.write("Ok, let's try another one!")
-            i += 1 
-            isOk = ''
+    if isOk.lower() == "y": 
+        st.write("Great!")
+    elif isOk.lower() == "n": 
+        st.write("Ok, let's see what else we have!")
+        for i in range(1, 10):
             component.iframe('https://open.spotify.com/embed/track/' + songs_in_cluster[i])
 
